@@ -37,7 +37,7 @@ app.post('/shopping-list', jsonParser, (req, res) => {
   for (let i=0; i<requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {
-      const message = `Missing \`${field}\` in request body`
+      const message = `Missing \`${field}\` in request body`;
       console.error(message);
       return res.status(400).send(message);
     }
@@ -46,7 +46,18 @@ app.post('/shopping-list', jsonParser, (req, res) => {
   const item = ShoppingList.create(req.body.name, req.body.budget);
   res.status(201).json(item);
 });
-
+app.post('/recipes',jsonParser,(req,res)=>{
+  const requiredFields=['name','ingredients'];
+  requiredFields.forEach(el=> {
+    if(!(el in req.body)){
+      const message =  `Missing \`${el}\` in request body`;
+      console.error(message);
+      return res.status(400).send(message);
+    }
+  });
+  const recipe = Recipes.create(req.body.name,req.body.ingredients);
+  res.status(201).json(recipe);
+});
 
 app.get('/recipes', (req, res) => {
   res.json(Recipes.get());
